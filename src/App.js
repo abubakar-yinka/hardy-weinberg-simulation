@@ -13,7 +13,7 @@ const q = 1 - p;
 console.log(`Generation 0 => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
 
 
-//Calculating the genotype frequencies for the next generations
+//Calculating the genotype frequencies for the next generations based on the allele frequencies
 const create_next_generation = (generation_number) => {
   a1a1 = p * p;
   a1a2 = 2 * p * q;
@@ -22,16 +22,9 @@ const create_next_generation = (generation_number) => {
   console.log(`Generation ${generation_number} => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
 }
 
-create_next_generation(1);
-
-create_next_generation(2);
-
-create_next_generation(3);
-
-create_next_generation(4);
-
-create_next_generation(5);
-
+for(let i = 0; i < 5; i++) {
+  create_next_generation(i + 1);
+}
 
 function App() {
   return (
