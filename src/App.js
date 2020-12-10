@@ -13,12 +13,25 @@ const q = 1 - p;
 console.log(`Generation 0 => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
 
 
-//Calculating the next generation
-a1a1 = p * p;
-a1a2 = 2 * p * q;
-a2a2 = q * q;
+//Calculating the genotype frequencies for the next generations
+const create_next_generation = (generation_number) => {
+  a1a1 = p * p;
+  a1a2 = 2 * p * q;
+  a2a2 = q * q;
 
-console.log(`Generation 1 => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
+  console.log(`Generation ${generation_number} => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
+}
+
+create_next_generation(1);
+
+create_next_generation(2);
+
+create_next_generation(3);
+
+create_next_generation(4);
+
+create_next_generation(5);
+
 
 function App() {
   return (
