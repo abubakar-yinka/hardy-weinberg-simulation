@@ -25,11 +25,56 @@ const create_next_generation = (generation_number) => {
   a2a2 = q * q;
 
   console.log(`Generation ${generation_number} => a1a1: ${round_number(a1a1, 2)}, a2a2: ${round_number(a2a2, 2)}, a1a2: ${round_number(a1a2, 2)}, p: ${p}, q: ${q}`);
-}
-
+};
 for(let i = 0; i < 5; i++) {
   create_next_generation(i + 1);
+};
+
+//-------------------------------
+
+//Coin Flipper Demonstration
+const repeat = 1000;
+let sum = 0;
+for (let i = 0; i < repeat; i++) {
+  sum = sum + Math.random();  
 }
+const average = sum / repeat;
+console.log(`The average is ${average}`);
+
+//The probability of throwing 10 coins and resulting to exactly 2 tails 
+const coin_tosser = () => {
+  const coins = 10;
+  let heads = 0;
+  let tails = 0;
+
+  for (let i = 0; i < coins; i++) {
+    //The fact that each number btw 0 and 1 comes up with equal probability can be used to generate a fair coin i.e equal probability of heads and tails(0.5)
+    if (Math.random() <= 0.5) {
+      heads += 1;
+    } else {
+      tails += 1;
+    }
+  }
+
+  if (heads === 8) {
+    return true;
+  } else {
+    return false;
+  }
+  
+}
+//Calling the coin tosser function to know how many times 8 heads came up when the coin was tossed 10 times
+const repeats = 10000000;
+let counter = 0;
+for (let i = 0; i < repeats; i++) {
+    const desired_outcome = coin_tosser();
+    if (desired_outcome) {
+      counter += 1;
+    }
+}
+console.log(`Getting 8 heads and 2 tails, ${(counter/repeats) * 100}% of the time`);
+
+//-------------------------------  
 
 function App() {
   return (
