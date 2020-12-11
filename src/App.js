@@ -12,6 +12,11 @@ const q = 1 - p;
 
 console.log(`Generation 0 => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
 
+//Rounding a number to a specified number of digits after the decimal pt of the value
+const round_number = (value, decimals) => {
+  const exponent_calculator = Math.pow(10, decimals)
+  return Math.round(value * exponent_calculator) / exponent_calculator;
+}
 
 //Calculating the genotype frequencies for the next generations based on the allele frequencies
 const create_next_generation = (generation_number) => {
@@ -19,7 +24,7 @@ const create_next_generation = (generation_number) => {
   a1a2 = 2 * p * q;
   a2a2 = q * q;
 
-  console.log(`Generation ${generation_number} => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
+  console.log(`Generation ${generation_number} => a1a1: ${round_number(a1a1, 2)}, a2a2: ${round_number(a2a2, 2)}, a1a2: ${round_number(a1a2, 2)}, p: ${p}, q: ${q}`);
 }
 
 for(let i = 0; i < 5; i++) {
