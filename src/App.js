@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import LineChart from './LineChart';
 
 // //Initialising the genotype frequencies
 // let a1a1 = 0.15;
@@ -31,8 +32,10 @@ const round_number = (value, decimals) => {
 // };
 
 let p = 0.5;
-const N = 1000;
+let q = 0.5;
+const N = 500;
 const generations = 1000;
+const data = [];
 
 //Calculate the next Generation using a generic next generation function to demonstrate genetic drift
 const next_generation = () => {
@@ -48,11 +51,13 @@ const next_generation = () => {
   }
   //Calculate the new allele frequencies
   p = a1 / draws;
+  q = a2 / draws
+  data.push(p);
 }
 //Calling the next generation function to create a new generation 1000x
 for (let i = 0; i < generations; i++) {
   next_generation();
-  console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(1-p, 4)}`);
+  console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
 }
 
 //-------------------------------
@@ -101,6 +106,7 @@ for (let i = 0; i < generations; i++) {
 // console.log(`Getting 8 heads and 2 tails, ${(counter/repeats) * 100}% of the time`);
 
 //-------------------------------  
+const legend = ["Population Size", N, "Generations:", generations]
 
 function App() {
   return (
@@ -119,6 +125,7 @@ function App() {
           Learn React.
         </a>
       </header>
+      <LineChart data={data} x_label="Generation" y_label="p" legend_values={legend}/>
     </div>
   );
 }
