@@ -33,13 +33,15 @@ const round_number = (value, decimals) => {
 
 let p;
 let q = 0.5;
-const N = 2000;
-const generations = 2000;
+let N = 100000;
+const generations = 100;
+const simulations = 10;
 const data = [];
+const pop_sizes = [];
 
 //Calculate the next Generation using a generic next generation function to demonstrate genetic drift
-const next_generation = (simulation_array) => {
-  const draws = 2 * N;
+const next_generation = (simulation_array, current_N) => {
+  const draws = 2 * current_N;
   let a1 = 0;
   let a2 = 0;
   for (let i = 0; i < draws; i++) {
@@ -54,20 +56,47 @@ const next_generation = (simulation_array) => {
   q = a2 / draws
   simulation_array.push(p);
 }
+
 //Calling the next generation function to create a new generation 1000x
 const simulation = (simulation_index) => {
   p = 0.5;
+  let pop_size;
   for (let i = 0; i < generations; i++) {
-    next_generation(data[simulation_index]);
+    //Implementing the bottleneck for every 10th gen(i % 10)
+    if (i % 10 === 9) {
+      pop_size = 10;
+    } else {
+      pop_size = N;
+    }
+
+    pop_sizes.push(pop_size);
+    next_generation(data[simulation_index], pop_size);
     console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
   }
 }
 
 //Using a loop to call the simulation function 10x
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < simulations; i++) {
   data.push([]);
   simulation(i);
 }
+
+//Calculate the harmonic mean of these set of numbers(population sizes) using a function
+const effective_pop_size = (all_pop_sizes) => {
+  let denominator = 0;
+  //Iterate over all the elements of the array provided in the argument and add the inverse of all the items to the denominator
+  for (let i = 0; i < all_pop_sizes.length; i++) {
+    let inverse_element = 1 / all_pop_sizes[i];
+    denominator += inverse_element;
+  }
+  
+  return Math.round(all_pop_sizes.length / denominator);
+}
+
+//The effective population size
+const Ne = effective_pop_size(pop_sizes);
+console.log(`Ne is ${Ne}`);
+
 
 //-------------------------------
 
@@ -115,7 +144,7 @@ for (let i = 0; i < 10; i++) {
 // console.log(`Getting 8 heads and 2 tails, ${(counter/repeats) * 100}% of the time`);
 
 //-------------------------------  
-const legend = ["Population Size", N, "Generations:", generations]
+const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
 
 function App() {
   return (
