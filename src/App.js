@@ -31,14 +31,14 @@ const round_number = (value, decimals) => {
 //   create_next_generation(i + 1);
 // };
 
-let p = 0.5;
+let p;
 let q = 0.5;
-const N = 500;
-const generations = 1000;
+const N = 2000;
+const generations = 2000;
 const data = [];
 
 //Calculate the next Generation using a generic next generation function to demonstrate genetic drift
-const next_generation = () => {
+const next_generation = (simulation_array) => {
   const draws = 2 * N;
   let a1 = 0;
   let a2 = 0;
@@ -52,12 +52,21 @@ const next_generation = () => {
   //Calculate the new allele frequencies
   p = a1 / draws;
   q = a2 / draws
-  data.push(p);
+  simulation_array.push(p);
 }
 //Calling the next generation function to create a new generation 1000x
-for (let i = 0; i < generations; i++) {
-  next_generation();
-  console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
+const simulation = (simulation_index) => {
+  p = 0.5;
+  for (let i = 0; i < generations; i++) {
+    next_generation(data[simulation_index]);
+    console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
+  }
+}
+
+//Using a loop to call the simulation function 10x
+for (let i = 0; i < 10; i++) {
+  data.push([]);
+  simulation(i);
 }
 
 //-------------------------------
