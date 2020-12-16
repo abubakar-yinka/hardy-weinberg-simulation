@@ -1,8 +1,8 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import LineChart from './LineChart';
+// import LineChart from './LineChart';
 
-// //Initialising the genotype frequencies
+// // 1. Initialising the genotype frequencies
 // let a1a1 = 0.15;
 // let a2a2 = 0.35;
 // let a1a2 = 1 - (a1a1 + a2a2);
@@ -31,76 +31,77 @@ const round_number = (value, decimals) => {
 //   create_next_generation(i + 1);
 // };
 
-let p;
-let q = 0.5;
-let N = 100000;
-const generations = 100;
-const simulations = 10;
-const data = [];
-const pop_sizes = [];
+// 2. 
+// let p;
+// let q = 0.5;
+// let N = 100000;
+// const generations = 100;
+// const simulations = 10;
+// const data = [];
+// const pop_sizes = [];
 
-//Calculate the next Generation using a generic next generation function to demonstrate genetic drift
-const next_generation = (simulation_array, current_N) => {
-  const draws = 2 * current_N;
-  let a1 = 0;
-  let a2 = 0;
-  for (let i = 0; i < draws; i++) {
-    if (Math.random() <= p) {
-      a1 += 1;
-    } else {
-      a2 += 1;
-    }
-  }
-  //Calculate the new allele frequencies
-  p = a1 / draws;
-  q = a2 / draws
-  simulation_array.push(p);
-}
+// //Calculate the next Generation using a generic next generation function to demonstrate genetic drift
+// const next_generation = (simulation_array, current_N) => {
+//   const draws = 2 * current_N;
+//   let a1 = 0;
+//   let a2 = 0;
+//   for (let i = 0; i < draws; i++) {
+//     if (Math.random() <= p) {
+//       a1 += 1;
+//     } else {
+//       a2 += 1;
+//     }
+//   }
+//   //Calculate the new allele frequencies
+//   p = a1 / draws;
+//   q = a2 / draws
+//   simulation_array.push(p);
+// }
 
-//Calling the next generation function to create a new generation 1000x
-const simulation = (simulation_index) => {
-  p = 0.5;
-  let pop_size;
-  for (let i = 0; i < generations; i++) {
-    //Implementing the bottleneck for every 10th gen(i % 10)
-    if (i % 10 === 9) {
-      pop_size = 10;
-    } else {
-      pop_size = N;
-    }
+// //Calling the next generation function to create a new generation 1000x
+// const simulation = (simulation_index) => {
+//   p = 0.5;
+//   let pop_size;
+//   for (let i = 0; i < generations; i++) {
+//     //Implementing the bottleneck for every 10th gen(i % 10)
+//     if (i % 10 === 9) {
+//       pop_size = 10;
+//     } else {
+//       pop_size = N;
+//     }
 
-    pop_sizes.push(pop_size);
-    next_generation(data[simulation_index], pop_size);
-    console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
-  }
-}
+//     pop_sizes.push(pop_size);
+//     next_generation(data[simulation_index], pop_size);
+//     console.log(`The value of p and q in generation ${i} is ${round_number(p, 4)} and ${round_number(q, 4)}`);
+//   }
+// }
 
-//Using a loop to call the simulation function 10x
-for (let i = 0; i < simulations; i++) {
-  data.push([]);
-  simulation(i);
-}
+// //Using a loop to call the simulation function 10x
+// for (let i = 0; i < simulations; i++) {
+//   data.push([]);
+//   simulation(i);
+// }
 
-//Calculate the harmonic mean of these set of numbers(population sizes) using a function
-const effective_pop_size = (all_pop_sizes) => {
-  let denominator = 0;
-  //Iterate over all the elements of the array provided in the argument and add the inverse of all the items to the denominator
-  for (let i = 0; i < all_pop_sizes.length; i++) {
-    let inverse_element = 1 / all_pop_sizes[i];
-    denominator += inverse_element;
-  }
+// //Calculate the harmonic mean of these set of numbers(population sizes) using a function
+// const effective_pop_size = (all_pop_sizes) => {
+//   let denominator = 0;
+//   //Iterate over all the elements of the array provided in the argument and add the inverse of all the items to the denominator
+//   for (let i = 0; i < all_pop_sizes.length; i++) {
+//     let inverse_element = 1 / all_pop_sizes[i];
+//     denominator += inverse_element;
+//   }
   
-  return Math.round(all_pop_sizes.length / denominator);
-}
+//   return Math.round(all_pop_sizes.length / denominator);
+// }
 
-//The effective population size
-const Ne = effective_pop_size(pop_sizes);
-console.log(`Ne is ${Ne}`);
+// //The effective population size
+// const Ne = effective_pop_size(pop_sizes);
+// console.log(`Ne is ${Ne}`);
 
 
 //-------------------------------
 
-// //Coin Flipper Demonstration
+// // 3. Coin Flipper Demonstration
 // const repeat = 1000;
 // let sum = 0;
 // for (let i = 0; i < repeat; i++) {
@@ -144,12 +145,48 @@ console.log(`Ne is ${Ne}`);
 // console.log(`Getting 8 heads and 2 tails, ${(counter/repeats) * 100}% of the time`);
 
 //-------------------------------  
-const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
+
+//4. (Generating DNA Sequences) Implementing the idea of having multiple dna sequences that changes over time due to random mutation
+const no_of_sequences = 100;
+const sequence_length = 20;
+const original_dna_sequence = [];
+//The sequences array is a 2 dimensional array which contains a set of arrays which all contain identical 20-base long dna sequences. They are all identical because we don't want genetic variation
+const sequences = []; //Population: which is basically a 2-D array that holds a 100 other sequences which are also arrays and each sequence belongs to a simplified person
+
+//To generate the first generation/Population of a 100 people(100 dna sequences)
+const generate_first_generation = () => {
+  generate_first_sequence();
+  for (let i = 0; i < no_of_sequences; i++) {
+    console.log(original_dna_sequence.slice())
+    //Return a copy of the original array using slice method and push into the sequences array
+    sequences.push(original_dna_sequence.slice()); 
+  }
+}
+
+//To generate the first original dna sequence 20bases long
+const generate_first_sequence = () => {
+  for (let i = 0; i < sequence_length; i++) {
+    original_dna_sequence.push(generate_random_base());
+  }
+}
+
+//Returns a random base(A, G, C, T) using math random(returns a number btw 0 and 1 but not including 1) and math floor(to round down) to generate the index which will be used to access a random base.
+const generate_random_base = () => {
+  let bases = ['A', 'G', 'C', 'T'];
+  const index = Math.floor(Math.random() * 4);
+  console.log(`The index is ${index}`);
+  return bases[index];
+}
+
+generate_first_generation();
+
+
+// const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -163,7 +200,7 @@ function App() {
           Learn React.
         </a>
       </header>
-      <LineChart data={data} x_label="Generation" y_label="p" legend_values={legend}/>
+      <LineChart data={data} x_label="Generation" y_label="p" legend_values={legend}/> */}
     </div>
   );
 }
