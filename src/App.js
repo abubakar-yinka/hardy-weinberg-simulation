@@ -152,12 +152,14 @@ const sequence_length = 20;
 const original_dna_sequence = [];
 //The sequences array is a 2 dimensional array which contains a set of arrays which all contain identical 20-base long dna sequences. They are all identical because we don't want genetic variation
 const sequences = []; //Population: which is basically a 2-D array that holds a 100 other sequences which are also arrays and each sequence belongs to a simplified person
+const no_of_generations = 100;
+const mutation_rate = 0.0001; //Per base and generation
 
 //To generate the first generation/Population of a 100 people(100 dna sequences)
 const generate_first_generation = () => {
   generate_first_sequence();
   for (let i = 0; i < no_of_sequences; i++) {
-    console.log(original_dna_sequence.slice())
+    // console.log(original_dna_sequence.slice())
     //Return a copy of the original array using slice method and push into the sequences array
     sequences.push(original_dna_sequence.slice()); 
   }
@@ -174,11 +176,45 @@ const generate_first_sequence = () => {
 const generate_random_base = () => {
   let bases = ['A', 'G', 'C', 'T'];
   const index = Math.floor(Math.random() * 4);
-  console.log(`The index is ${index}`);
+  // console.log(`The index is ${index}`);
   return bases[index];
 }
 
+const print_sequences = () => {
+  for (let i = 0; i < no_of_sequences; i++) {
+    print_sequence(sequences[i]);
+  }
+}
+
+const print_sequence = sequence => {
+  let sequence_string = ""
+  for (let i = 0; i < sequence.length; i++) {
+    sequence_string += sequence[i];
+  }
+  console.log(sequence_string)
+}
+
+//change the bases in those dna strings with a certain rate called mutation rate i.e introduce some random modifications in those dna sequences, using a 3 fold nested loop in a function
+const run_generations = () => {
+  for (let i = 0; i < no_of_generations; i++) {
+    //Each generation, go through all the sequences and within each sequence, go through all the bases and occasionally change a random base.
+    for (let ii = 0; ii < sequences.length; ii++) {
+      //Going through each sequence
+      for (let iii = 0; iii < sequences[ii].length; iii++) {
+        //going through each base to change a base randomly
+        //This should happen with a certain rate/probability which is the mutation rate that is 1 in 10000
+          if (Math.random() < mutation_rate) {
+            sequences[ii][iii] = generate_random_base(); //accessing the element of a 2-D array
+          } 
+      }
+    }
+  }
+};
+
 generate_first_generation();
+print_sequences();
+run_generations();
+print_sequences();
 
 
 // const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
