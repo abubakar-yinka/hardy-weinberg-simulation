@@ -161,7 +161,6 @@ const bases = ['A', 'G', 'C', 'T'];
 const generate_first_generation = () => {
   generate_first_sequence();
   for (let i = 0; i < no_of_sequences; i++) {
-    // console.log(original_dna_sequence.slice())
     //Return a copy of the original array using slice method and push into the sequences array
     sequences.push(original_dna_sequence.slice()); 
   }
