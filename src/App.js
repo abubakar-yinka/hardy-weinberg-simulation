@@ -155,6 +155,8 @@ const sequences = []; //Population: which is basically a 2-D array that holds a 
 const no_of_generations = 100;
 const mutation_rate = 0.0001; //Per base and generation
 
+const bases = ['A', 'G', 'C', 'T'];
+
 //To generate the first generation/Population of a 100 people(100 dna sequences)
 const generate_first_generation = () => {
   generate_first_sequence();
@@ -168,22 +170,26 @@ const generate_first_generation = () => {
 //To generate the first original dna sequence 20bases long
 const generate_first_sequence = () => {
   for (let i = 0; i < sequence_length; i++) {
-    original_dna_sequence.push(generate_random_base());
+    original_dna_sequence.push(generate_random_base(""));
   }
 }
 
 //Returns a random base(A, G, C, T) using math random(returns a number btw 0 and 1 but not including 1) and math floor(to round down) to generate the index which will be used to access a random base.
-const generate_random_base = () => {
-  let bases = ['A', 'G', 'C', 'T'];
-  const index = Math.floor(Math.random() * 4);
-  // console.log(`The index is ${index}`);
-  return bases[index];
+const generate_random_base = (current_base) => {
+  let new_base;
+  do {
+    const index = Math.floor(Math.random() * 4);
+    new_base = bases[index];
+  } while (new_base === current_base);
+  return new_base;
 }
 
-const print_sequences = () => {
+const print_sequences = (title) => {
+  console.log(title)
   for (let i = 0; i < no_of_sequences; i++) {
     print_sequence(sequences[i]);
   }
+  console.log("")
 }
 
 const print_sequence = sequence => {
@@ -204,7 +210,7 @@ const run_generations = () => {
         //going through each base to change a base randomly
         //This should happen with a certain rate/probability which is the mutation rate that is 1 in 10000
           if (Math.random() < mutation_rate) {
-            sequences[ii][iii] = generate_random_base(); //accessing the element of a 2-D array
+            sequences[ii][iii] = generate_random_base(sequences[ii][iii]); //accessing the element of a 2-D array
           } 
       }
     }
@@ -212,9 +218,9 @@ const run_generations = () => {
 };
 
 generate_first_generation();
-print_sequences();
+print_sequences(`Generaion 0`);
 run_generations();
-print_sequences();
+print_sequences(`After ${no_of_generations} generations`);
 
 
 // const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
