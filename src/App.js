@@ -161,7 +161,7 @@ const bases = ['A', 'G', 'C', 'T'];
 const generate_first_generation = () => {
   generate_first_sequence();
   for (let i = 0; i < no_of_sequences; i++) {
-    //Return a copy of the original array using slice method and push into the sequences array
+      //Return a copy of the original array using slice method and push into the sequences array
     sequences.push(original_dna_sequence.slice()); 
   }
 }
@@ -215,6 +215,43 @@ const run_generations = () => {
     }
   }
 };
+
+const N = 100
+let p;
+const simulations = 10000;
+let fixations_of_mutants = 0;
+
+const next__generation = () => {
+  const draws = 2 * N;
+  let a1 = 0;
+  let a2 = 0;
+  for (let i = 0; i < draws; i++) {
+      if (Math.random() <= p) {
+        a1 += 1;
+      } else {
+        a2 += 1;
+      }
+  }
+  p = a1 / draws 
+}
+
+const run_until_fixation = () => {
+  p = 1 / (2 * N);
+  //If p = 0 or 1, it means that either the a1 has been lost and a2 has gone into fixation or vice versa
+  do {
+    next__generation();
+  } while (p > 0 && p < 1);
+  //How often p goes to 1 i.e fixation
+  if (p === 1) {
+    fixations_of_mutants += 1;
+  }
+}
+
+for (let i = 0; i < simulations; i++) {
+  run_until_fixation();  
+}
+
+console.log(`${fixations_of_mutants / simulations} is the fraction of simulations or prob that a1 has gone to fixation which is mathematically 0.005`)
 
 generate_first_generation();
 print_sequences(`Generaion 0`);
