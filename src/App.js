@@ -218,8 +218,9 @@ const run_generations = () => {
 
 const N = 100
 let p;
-const simulations = 10000;
+const simulations = 100000;
 let fixations_of_mutants = 0;
+let generations_that_went_to_fixation = 0
 
 const next__generation = () => {
   const draws = 2 * N;
@@ -236,27 +237,31 @@ const next__generation = () => {
 }
 
 const run_until_fixation = () => {
-  p = 1 / (2 * N);
+  p = 1 / (2 * N); //freq of one single a1 allele at the beginning
+  let generation_no = 0; //To keep track of the number of generations in each simulation run
   //If p = 0 or 1, it means that either the a1 has been lost and a2 has gone into fixation or vice versa
   do {
     next__generation();
+    generation_no += 1;
   } while (p > 0 && p < 1);
   //How often p goes to 1 i.e fixation
   if (p === 1) {
     fixations_of_mutants += 1;
+    generations_that_went_to_fixation = generations_that_went_to_fixation + generation_no
   }
 }
 
 for (let i = 0; i < simulations; i++) {
   run_until_fixation();  
 }
+// console.log(`${fixations_of_mutants / simulations} is the fraction of simulations or prob that a1 has gone to fixation which is mathematically 0.005`)
+//generations_that_went_to_fixation is the sum of all generations that was spent in oly those simulations where p === 1
+console.log(`${generations_that_went_to_fixation / fixations_of_mutants} is the average no of generations it takes for the a1 allele to go to fixation and the expected average is 2N`)
 
-console.log(`${fixations_of_mutants / simulations} is the fraction of simulations or prob that a1 has gone to fixation which is mathematically 0.005`)
-
-generate_first_generation();
-print_sequences(`Generaion 0`);
-run_generations();
-print_sequences(`After ${no_of_generations} generations`);
+// generate_first_generation();
+// print_sequences(`Generaion 0`);
+// run_generations();
+// print_sequences(`After ${no_of_generations} generations`);
 
 
 // const legend = ["Eff. Population Size:", Ne, "Generations:", generations]
