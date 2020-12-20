@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 // import LineChart from './LineChart';
+import SpatialModels from './components/SpatialModels'
 
 // // 1. Initialising the genotype frequencies
 // let a1a1 = 0.15;
@@ -14,10 +15,10 @@ import './App.css';
 // console.log(`Generation 0 => a1a1: ${a1a1}, a2a2: ${a2a2}, a1a2: ${a1a2}, p: ${p}, q: ${q}`);
 
 //Rounding a number to a specified number of digits after the decimal pt of the value
-const round_number = (value, decimals) => {
-  const exponent_calculator = Math.pow(10, decimals)
-  return Math.round(value * exponent_calculator) / exponent_calculator;
-}
+// const round_number = (value, decimals) => {
+//   const exponent_calculator = Math.pow(10, decimals)
+//   return Math.round(value * exponent_calculator) / exponent_calculator;
+// }
 
 // //Calculating the genotype frequencies for the next generations based on the allele frequencies
 // const create_next_generation = (generation_number) => {
@@ -216,47 +217,47 @@ const run_generations = () => {
   }
 };
 
-const N = 100
-let p;
-const simulations = 100000;
-let fixations_of_mutants = 0;
-let generations_that_went_to_fixation = 0
+// const N = 100
+// let p;
+// const simulations = 10000;
+// let fixations_of_mutants = 0;
+// let generations_that_went_to_fixation = 0
 
-const next__generation = () => {
-  const draws = 2 * N;
-  let a1 = 0;
-  let a2 = 0;
-  for (let i = 0; i < draws; i++) {
-      if (Math.random() <= p) {
-        a1 += 1;
-      } else {
-        a2 += 1;
-      }
-  }
-  p = a1 / draws 
-}
+// const next__generation = () => {
+//   const draws = 2 * N;
+//   let a1 = 0;
+//   let a2 = 0;
+//   for (let i = 0; i < draws; i++) {
+//       if (Math.random() <= p) {
+//         a1 += 1;
+//       } else {
+//         a2 += 1;
+//       }
+//   }
+//   p = a1 / draws 
+// }
 
-const run_until_fixation = () => {
-  p = 1 / (2 * N); //freq of one single a1 allele at the beginning
-  let generation_no = 0; //To keep track of the number of generations in each simulation run
-  //If p = 0 or 1, it means that either the a1 has been lost and a2 has gone into fixation or vice versa
-  do {
-    next__generation();
-    generation_no += 1;
-  } while (p > 0 && p < 1);
-  //How often p goes to 1 i.e fixation
-  if (p === 1) {
-    fixations_of_mutants += 1;
-    generations_that_went_to_fixation = generations_that_went_to_fixation + generation_no
-  }
-}
+// const run_until_fixation = () => {
+//   p = 1 / (2 * N); //freq of one single a1 allele at the beginning
+//   let generation_no = 0; //To keep track of the number of generations in each simulation run
+//   //If p = 0 or 1, it means that either the a1 has been lost and a2 has gone into fixation or vice versa
+//   do {
+//     next__generation();
+//     generation_no += 1;
+//   } while (p > 0 && p < 1);
+//   //How often p goes to 1 i.e fixation
+//   if (p === 1) {
+//     fixations_of_mutants += 1;
+//     generations_that_went_to_fixation = generations_that_went_to_fixation + generation_no
+//   }
+// }
 
-for (let i = 0; i < simulations; i++) {
-  run_until_fixation();  
-}
+// for (let i = 0; i < simulations; i++) {
+//   run_until_fixation();  
+// }
 // console.log(`${fixations_of_mutants / simulations} is the fraction of simulations or prob that a1 has gone to fixation which is mathematically 0.005`)
 //generations_that_went_to_fixation is the sum of all generations that was spent in oly those simulations where p === 1
-console.log(`${generations_that_went_to_fixation / fixations_of_mutants} is the average no of generations it takes for the a1 allele to go to fixation and the expected average is 2N`)
+// console.log(`${generations_that_went_to_fixation / fixations_of_mutants} is the average no of generations it takes for the a1 allele to go to fixation and the expected average is 4N`)
 
 // generate_first_generation();
 // print_sequences(`Generaion 0`);
@@ -284,6 +285,7 @@ function App() {
         </a>
       </header>
       <LineChart data={data} x_label="Generation" y_label="p" legend_values={legend}/> */}
+      <SpatialModels />
     </div>
   );
 }
